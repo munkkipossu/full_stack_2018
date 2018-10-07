@@ -1,0 +1,66 @@
+kayttaja->selain:
+note right of kayttaja
+kayttaja kirjottaa osoiteriville
+https://fullstack-exampleapp.herokuapp.com/notes
+end note
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/notes
+note left of palvelin
+  muodostetaan HTML, jonka header sisältää css-
+  sekä js-tiedostojen sijainnin
+end note
+palvelin->selain: status 200, sivun HTML-koodi
+
+note left of selain
+  selain noutaa headerista päätellyn css:n
+end note
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200, css
+
+note left of selain
+  selain noutaa headerista päätellyn javascriptin
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.js
+palvelin->+selain: status 200, javascript
+
+
+note right of selain
+  Selain suorittaa noudetun javascriptin:
+  
+  var xhttp = new XMLHttpRequest()
+  xhttp.open("GET", "/data.json", true)
+  xhttp.send()
+end note
+
+
+selain->+palvelin: GET https://fullstack-exampleapp.herokuapp.com/data.json
+
+selain->-kayttaja: alkuperäinen HTML
+
+note left of selain
+  selain näyttää käyttäjälle alkuperäisen HTML:n,
+  joka ei sisällä listaa viesteistä
+end note
+
+note left of palvelin
+  palvelin luo datalistan, jonka se palauttaa selaimelle
+end note
+
+palvelin->-selain: status 200, data [json lista viesteistä]
+
+selain->+selain: noudon valmistuminen aktivoi takaisinkutsufunktion
+
+note right of selain
+  luodaan <ul> lista, johon lisäätään datan viestit
+  <li> kenttinä. Lista lisätään HTML:N "notes" id:n
+  omaavaan <div>:iin
+end note
+
+
+selain->-kayttaja: muokattu HTML
+
+note left of selain
+ selain näyttää javascriptin muokkaaman
+ HTML:n käyttäjälle
+end note
+

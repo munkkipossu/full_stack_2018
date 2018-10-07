@@ -1,0 +1,79 @@
+kayttaja->selain:
+note right of kayttaja
+kayttaja kirjottaa osoiteriville
+https://fullstack-exampleapp.herokuapp.com/spa
+end note
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/spa
+note left of palvelin
+  muodostetaan HTML, jonka header sisältää css-
+  sekä js-tiedostojen sijainnin headerissa
+end note
+palvelin->selain: status 200 OK, HTML-koodi
+
+note left of selain
+  selain noutaa headerista päätellyn css:n
+end note
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200, css-tiedosto
+
+note left of selain
+  selain noutaa headerista päätellyn javascriptin
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.js
+palvelin->selain: status 200, javascript
+
+
+selain->+selain: selain suorittaa noudetun javasctiptin
+
+note right of selain
+  var xhttp = new XMLHttpRequest()
+  xhttp.open("GET", "/data.json", true)
+  xhttp.send()
+end note
+
+selain->+palvelin: GET https://fullstack-exampleapp.herokuapp.com/data.json
+
+note right of selain
+  windows.onload funktio: estää HTML:n <form>
+  kentän oletustoiminnallisuuden ja korvaa sen
+  uudella javascript toiminnolla.
+  
+  HUOM:"The load event fires at the end of the 
+  document loading process. At this point, all 
+  of the objects in the document are in the DOM, 
+  and all the images, scripts, links and sub-frames
+  have finished loading."
+end note
+
+selain->-selain: javascriptin suoritus päättyy
+
+
+selain->kayttaja: alkuperäinen HTML renderöitynä
+
+note left of selain
+ selain näyttää alkuperäisen HTML:n käyttäjälle
+end note
+
+note left of palvelin
+  palvelin luo datalistan, jonka se palauttaa selaimelle
+end note
+
+palvelin->-selain: status 200, data [json lista viesteistä]
+
+selain->+selain: noudon valmistuminen aktivoi takaisinkutsufunktion
+
+
+note right of selain
+  kutsutaan funktioata redrawNotes:
+  luodaan <ul> lista, johon lisäätään datan viestit
+  <li> kenttinä. Lista lisätään HTML:N "notes" id:n
+  omaavaan <div>:iin
+end note
+
+note left of selain
+  selain näyttää käyttäjälle päivitetyn HTMLn
+end note
+
+
+

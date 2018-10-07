@@ -1,0 +1,51 @@
+kayttaja->selain:
+note right of kayttaja
+  kayttaja syöttää kenttään sanan "asdf"
+  ja painaa "talleta" nappia
+end note
+
+
+note left of selain
+  javascriptin window.onload-funktio on 
+  korvannut normaalin HTML <form> kentän
+  suorituksen javascriptillä
+end note
+
+selain->+selain: javascriptin suoritus alkaa
+
+note left of selain
+  javascript luo note olion, joka lisätään
+  "notes" listaan
+end note
+
+note left of selain
+  redrawNotes():
+  - luodaan uusi <ul>
+  - lisätään <li> jokaisesta "notes":n vististä
+  - haetaan dokumentin "notes" id-elementti
+    - poistetaan tältä olemassaolevat arvot
+    - lisätään rakennettu <ul>
+end note
+
+
+note left of selain
+  sendToServer(note):
+end note
+
+selain->-palvelin: POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+
+selain->kayttaja: Päivitetty HTML
+
+note right of kayttaja
+  käyttäjälle näytetään uudesta "document":sta
+  luotu HTML
+end note
+
+
+note left of palvelin
+  selain tallentaa uuden viestin (muttei 
+  tässä tapauksessa tietokantaan)
+end note
+
+palvelin->selain: status 201 CREATED
+
