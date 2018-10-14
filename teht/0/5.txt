@@ -20,11 +20,16 @@ note left of selain
   selain noutaa headerista päätellyn javascriptin
 end note
 
-selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.js
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/spa.js
 palvelin->selain: status 200, javascript
 
 
 selain->+selain: selain suorittaa noudetun javasctiptin
+
+note right of selain
+  luodaan muuttuja notes:
+  var notes = []
+end note
 
 note right of selain
   var xhttp = new XMLHttpRequest()
