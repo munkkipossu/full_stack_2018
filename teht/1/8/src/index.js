@@ -36,9 +36,14 @@ class App extends React.Component {
       <div>
         <div>
           <Otsikko teksti="Anna Palautetta" />
+        </div>
+        <div>
           <Button handleClick={this.asetaKenttaArvoon(this.state.hyva, this.state.hyva.maara + 1)} text="hyvä"/>
           <Button handleClick={this.asetaKenttaArvoon(this.state.neutraali, this.state.neutraali.maara + 1)}text="neutraali"/>
           <Button handleClick={this.asetaKenttaArvoon(this.state.huono,this.state.huono.maara + 1)} text="huono"/>
+        </div>
+        <div>
+          <Otsikko teksti="Statistiikka" />
         </div>
         <div>
           <Statistics tilastot={this.state} />
@@ -75,29 +80,13 @@ const Otsikko = ({teksti}) => (
 
 const Statistics = ({tilastot}) =>(
   <div>
-    <Otsikko teksti="Statistiikka" />
     <Statistic field={tilastot.hyva} />
     <Statistic field={tilastot.neutraali} />
     <Statistic field={tilastot.huono} />
-    <AdditionalStatistic tilastot={tilastot} />
- </div>
+    <p>keskiarvo: {keskiarvo(tilastot)}</p>
+    <p>positiivisia: {positiivisia(tilastot)} %</p>
+  </div>
 )
-
-const AdditionalStatistic = ({tilastot}) => {
-  if (arvostelujaYhteensa(tilastot) > 0) {
-    return (
-      <div>
-        <p>keskiarvo: {keskiarvo(tilastot)}</p>
-        <p>positiivisia: {positiivisia(tilastot)} %</p>
-      </div>
-    )
-  }
-  return (
-    <div>
-      <p>ei yhtään palautetta annettu</p>
-    </div>
-  )
-}
 
 const Statistic = ({field}) => (
   <div>

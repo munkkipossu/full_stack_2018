@@ -31,39 +31,50 @@ class App extends React.Component {
     }
   }
 
+  arvostelujaYhteensa() {
+    return this.state.hyva.maara + this.state.neutraali.maara + this.state.huono.maara
+  }
+
+  keskiarvo() {
+    if (this.arvostelujaYhteensa() === 0){
+       return 0
+    }
+    return ((this.state.hyva.maara - this.state.huono.maara)/this.arvostelujaYhteensa()).toFixed(2)
+  }
+
+  positiivisia() {
+    if (this.arvostelujaYhteensa() === 0){
+      return 0
+   }
+   return (this.state.hyva.maara * 100 / this.arvostelujaYhteensa()).toFixed(2)
+  }
+
   render() {
     return (
       <div>
         <div>
           <Otsikko teksti="Anna Palautetta" />
+        </div>
+        <div>
           <Button handleClick={this.asetaKenttaArvoon(this.state.hyva, this.state.hyva.maara + 1)} text="hyvä"/>
           <Button handleClick={this.asetaKenttaArvoon(this.state.neutraali, this.state.neutraali.maara + 1)}text="neutraali"/>
           <Button handleClick={this.asetaKenttaArvoon(this.state.huono,this.state.huono.maara + 1)} text="huono"/>
         </div>
         <div>
-          <Statistics tilastot={this.state} />
+          <Otsikko teksti="Statistiikka" />
+        </div>
+        <div>
+          <Statistiikka arvo={this.state.hyva} />
+          <Statistiikka arvo={this.state.neutraali} />  
+          <Statistiikka arvo={this.state.huono} />
+        </div>
+        <div>
+          <p>keskiarvo: {this.keskiarvo()}</p>
+          <p>positiivisia: {this.positiivisia()} %</p>
         </div>
       </div>
     )
   }
-}
-
-function arvostelujaYhteensa(tilastot) {
-  return tilastot.hyva.maara + tilastot.neutraali.maara + tilastot.huono.maara
-}
-
-function keskiarvo(tilastot) {
-  if (arvostelujaYhteensa(tilastot) === 0){
-     return 0
-  }
-  return ((tilastot.hyva.maara - tilastot.huono.maara)/arvostelujaYhteensa(tilastot)).toFixed(2)
-}
-
-function positiivisia(tilastot) {
-  if (arvostelujaYhteensa(tilastot) === 0){
-    return 0
- }
- return (tilastot.hyva.maara * 100 / arvostelujaYhteensa(tilastot)).toFixed(2)
 }
 
  
@@ -73,35 +84,9 @@ const Otsikko = ({teksti}) => (
   </div>
 )
 
-const Statistics = ({tilastot}) =>(
+const Statistiikka = ({arvo}) => (
   <div>
-    <Otsikko teksti="Statistiikka" />
-    <Statistic field={tilastot.hyva} />
-    <Statistic field={tilastot.neutraali} />
-    <Statistic field={tilastot.huono} />
-    <AdditionalStatistic tilastot={tilastot} />
- </div>
-)
-
-const AdditionalStatistic = ({tilastot}) => {
-  if (arvostelujaYhteensa(tilastot) > 0) {
-    return (
-      <div>
-        <p>keskiarvo: {keskiarvo(tilastot)}</p>
-        <p>positiivisia: {positiivisia(tilastot)} %</p>
-      </div>
-    )
-  }
-  return (
-    <div>
-      <p>ei yhtään palautetta annettu</p>
-    </div>
-  )
-}
-
-const Statistic = ({field}) => (
-  <div>
-    <p>{field.nimi}: {field.maara}</p>    
+    <p>{arvo.nimi}: {arvo.maara}</p>    
   </div>
 )
 

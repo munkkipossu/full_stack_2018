@@ -22,10 +22,12 @@ class App extends React.Component {
 
   asetaKenttaArvoon = (kentta, arvo) => {
     let foo = {}
+    console.log(arvo)
     foo[kentta.nimi] =  {
       nimi: kentta.nimi,
       maara: arvo
     }
+    console.log(foo)
     return () => {
       this.setState(foo)
     }
@@ -36,75 +38,38 @@ class App extends React.Component {
       <div>
         <div>
           <Otsikko teksti="Anna Palautetta" />
+        </div>
+        <div>
           <Button handleClick={this.asetaKenttaArvoon(this.state.hyva, this.state.hyva.maara + 1)} text="hyvä"/>
           <Button handleClick={this.asetaKenttaArvoon(this.state.neutraali, this.state.neutraali.maara + 1)}text="neutraali"/>
           <Button handleClick={this.asetaKenttaArvoon(this.state.huono,this.state.huono.maara + 1)} text="huono"/>
         </div>
         <div>
-          <Statistics tilastot={this.state} />
+          <Otsikko teksti="Statistiikka" />
+        </div>
+        <div>
+          <Statistiikka arvo={this.state.hyva} />
+          <Statistiikka arvo={this.state.neutraali} />
+          <Statistiikka arvo={this.state.huono} />
         </div>
       </div>
     )
   }
 }
 
-function arvostelujaYhteensa(tilastot) {
-  return tilastot.hyva.maara + tilastot.neutraali.maara + tilastot.huono.maara
-}
-
-function keskiarvo(tilastot) {
-  if (arvostelujaYhteensa(tilastot) === 0){
-     return 0
-  }
-  return ((tilastot.hyva.maara - tilastot.huono.maara)/arvostelujaYhteensa(tilastot)).toFixed(2)
-}
-
-function positiivisia(tilastot) {
-  if (arvostelujaYhteensa(tilastot) === 0){
-    return 0
- }
- return (tilastot.hyva.maara * 100 / arvostelujaYhteensa(tilastot)).toFixed(2)
-}
-
- 
 const Otsikko = ({teksti}) => (
   <div>
     <h1>{teksti}</h1>
   </div>
 )
 
-const Statistics = ({tilastot}) =>(
-  <div>
-    <Otsikko teksti="Statistiikka" />
-    <Statistic field={tilastot.hyva} />
-    <Statistic field={tilastot.neutraali} />
-    <Statistic field={tilastot.huono} />
-    <AdditionalStatistic tilastot={tilastot} />
- </div>
-)
-
-const AdditionalStatistic = ({tilastot}) => {
-  if (arvostelujaYhteensa(tilastot) > 0) {
-    return (
-      <div>
-        <p>keskiarvo: {keskiarvo(tilastot)}</p>
-        <p>positiivisia: {positiivisia(tilastot)} %</p>
-      </div>
-    )
-  }
+const Statistiikka = ({arvo}) => {
   return (
-    <div>
-      <p>ei yhtään palautetta annettu</p>
-    </div>
-  )
-}
-
-const Statistic = ({field}) => (
   <div>
-    <p>{field.nimi}: {field.maara}</p>    
+    <p>{arvo.nimi}: {arvo.maara}</p>    
   </div>
 )
-
+}
 const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>
     {text}
