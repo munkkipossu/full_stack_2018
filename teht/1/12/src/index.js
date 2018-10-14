@@ -6,32 +6,17 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selected: 0,
-      votes: Array(anecdotes.length).fill(0)
+      selected: 0
     }
   }
 
   randomAnecdote = () => () => this.setState({selected: Math.round(Math.random() * (anecdotes.length - 1))})
 
-  vote = () => () => {
-    let foo = this.state.votes.slice()
-    foo[this.state.selected] += 1
-    this.setState({votes: foo})
-  }
-
-  mostVotes = () = {
-
-  }
-
-
   render() {
     return (
       <div>
         <p>{this.props.anecdotes[this.state.selected]}</p>
-        <p>has {this.state.votes[this.state.selected]} votes</p>
-        <Button handleClick={this.vote()} text="vote" />  
-        <Button handleClick={this.randomAnecdote()} text="next anecdote"/>
-        <MostVotes voteCount={this.mostVotes()} id={this.state[vo]} />
+        <Button handleClick={this.randomAnecdote()} text="next anecdote"/>  
       </div>
     )
   }
@@ -52,15 +37,6 @@ const Button = ({ handleClick, text }) => (
     {text}
   </button>
 )
-
-const MostVotes = ({counter}) => {
-  return (
-    <div>
-      <p>{anecdotes[votes[counter]]}</p>
-      <p></p>
-    </div>
-  )
-}
 
 ReactDOM.render(
   <App anecdotes={anecdotes} />,
